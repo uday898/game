@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.12/pixi.min.js" integrity="sha512-Fvs7q5wIAzPgyYNEzppTt3G3/U8FvQwr9WQJHe113FQLX5tIL8uS4m6Rq+04SXf+C3IgorXW4HQzKKVLAGWgFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <script>
+
+            // Create a PixiJS application
+// Create a PixiJS application
+const app = new PIXI.Application();
+document.body.appendChild(app.view);
+
+// Create two sprites
+const sprite1 = new PIXI.Sprite.from('https://pixijs.com/assets/bunny.png');
+const sprite2 = new PIXI.Sprite.from('https://pixijs.com/assets/bunny.png');
+sprite1.anchor.set(0.5);
+sprite2.anchor.set(0.5);
+app.stage.addChild(sprite1);
+app.stage.addChild(sprite2);
+
+// Example vectors for collision detection
+const vector1 = { x: 1, y: 0 };
+const vector2 = { x: 0, y: 1 };
+
+function calculateAngle(v1, v2) {
+    const dotProduct = v1.x * v2.x + v1.y * v2.y;
+    const magnitude1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y);
+    const magnitude2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
+    return Math.cos(dotProduct / (magnitude1 * magnitude2));
+}
+
+app.ticker.add(() => {
+    const angleBetween = calculateAngle(vector1, vector2);
+    console.log(angleBetween); // Outputs the angle between the vectors
+});
+
+
+        </script>
+    </body>
+</html>

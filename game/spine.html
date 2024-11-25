@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.12/pixi.min.js" integrity="sha512-Fvs7q5wIAzPgyYNEzppTt3G3/U8FvQwr9WQJHe113FQLX5tIL8uS4m6Rq+04SXf+C3IgorXW4HQzKKVLAGWgFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="
+https://cdn.jsdelivr.net/npm/pixi-spine@3.1.2/dist/pixi-spine.umd.min.js
+"></script>
+    </head>
+    <body>
+        <script>
+const app = new PIXI.Application();
+document.body.appendChild(app.view);
+
+//app.loader.add('spritesheet','assets/background.json').load(loaded)
+app.loader
+    .add('sheet','assets/leprechaun.json')
+    .load(onAssetsLoaded);
+
+function onAssetsLoaded(assets){
+    const leprechaun = new PIXI.spine.Spine(assets.resources.sheet.spineData);
+leprechaun.x = app.screen.width/2;
+leprechaun.y = app.screen.height/2;
+leprechaun.state.setAnimation(0,"A_Bigwin_Anim",true);
+leprechaun.state.setAnimation(1,"B_Super_Bigwin_Anim",true);
+
+
+/* const mask = new PIXI.Graphics();
+mask.beginFill(0xffffff);
+//mask.drawCircle(app.screen.width / 2, app.screen.height / 2, 100);
+mask.drawRoundedRect(app.screen.width / 2, app.screen.height / 2, 100,100,10);
+
+mask.endFill(); */
+
+//leprechaun.mask = mask;
+app.stage.addChild(leprechaun);
+//app.stage.addChild(mask);
+
+let isDraggable = false;
+leprechaun.interactive = true;
+leprechaun.on('pointerdown',()=>{
+    isDraggable = true;
+});
+
+leprechaun.on('pointerup', onDragEnd)
+leprechaun.on('pointerupoutside', onDragEnd)
+
+function onDragEnd(){
+    isDraggable = false;
+};
+
+
+leprechaun.on('pointermove',(event)=>{
+    if(isDraggable){
+        let data = event.data;
+        mask.x = data.getLocalPosition(app.stage).x - app.screen.width / 2;
+        mask.y = data.getLocalPosition(app.stage).y - app.screen.height / 2;
+    }
+});
+}
+
+        </script>
+    </body>
+</html>

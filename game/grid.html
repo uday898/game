@@ -1,0 +1,54 @@
+
+
+  <html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.12/pixi.min.js" integrity="sha512-Fvs7q5wIAzPgyYNEzppTt3G3/U8FvQwr9WQJHe113FQLX5tIL8uS4m6Rq+04SXf+C3IgorXW4HQzKKVLAGWgFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <script>
+class GridContainer extends PIXI.Container {
+    constructor(rows, cols, cellSize) {
+      super();
+      this.rows = rows;
+      this.cols = cols;
+      this.cellSize = cellSize;
+    }
+  
+    addChildAtGrid(sprite, row, col) {
+      sprite.x = col * this.cellSize;
+      sprite.y = row * this.cellSize;
+      this.addChild(sprite);
+    }
+  
+    resize(width, height) {
+      this.cellSize = Math.min(width / this.cols, height / this.rows);
+      this.children.forEach(child => {
+        const row = Math.floor(child.y / this.cellSize);
+        const col = Math.floor(child.x / this.cellSize);
+        //this.addChildAtGrid(child, row, col);
+      });
+    }
+  }
+  
+  const app = new PIXI.Application();
+  document.body.appendChild(app.view);
+  
+  const grid = new GridContainer(5, 5, 20);
+  app.stage.addChild(grid);
+  
+  for (let i = 0; i < 20; i++) {
+    const sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
+    sprite.tint = Math.random() * 0xffffff;
+    //sprite.width = sprite.height = 50;
+    grid.addChildAtGrid(sprite, Math.floor(i / 10), i % 5);
+  }
+  
+  window.addEventListener('resize', () => {
+    grid.resize(window.innerWidth, window.innerHeight);
+  });
+  
+  grid.resize(window.innerWidth, window.innerHeight);
+        </script>
+    </body>
+</html>
+  

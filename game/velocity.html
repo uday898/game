@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.12/pixi.min.js" integrity="sha512-Fvs7q5wIAzPgyYNEzppTt3G3/U8FvQwr9WQJHe113FQLX5tIL8uS4m6Rq+04SXf+C3IgorXW4HQzKKVLAGWgFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <script>
+
+            // Create a PixiJS application
+// Create a PixiJS application
+const app = new PIXI.Application();
+document.body.appendChild(app.view);
+
+// Create a sprite
+const sprite = new PIXI.Sprite.from('https://pixijs.com/assets/bunny.png');
+sprite.anchor.set(0.5); // Center the anchor
+app.stage.addChild(sprite);
+
+const speed = 5;  // Speed of movement
+const directionAngle = Math.PI / 6; // 45 degrees in radians
+
+app.ticker.add(() => {
+    const velocityX = speed * Math.cos(directionAngle);
+    const velocityY = speed * Math.sin(directionAngle);
+    
+    sprite.x += velocityX;
+    sprite.y += velocityY;
+});
+
+
+
+        </script>
+    </body>
+</html>

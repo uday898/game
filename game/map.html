@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.12/pixi.min.js" integrity="sha512-Fvs7q5wIAzPgyYNEzppTt3G3/U8FvQwr9WQJHe113FQLX5tIL8uS4m6Rq+04SXf+C3IgorXW4HQzKKVLAGWgFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <script>
+const app = new PIXI.Application({ backgroundColor: 0xeeeeee });
+document.body.appendChild(app.view);
+
+const mapTexture = PIXI.Texture.from('assets/maingamebg.jpg');
+const mapSprite = new PIXI.Sprite(mapTexture);
+mapSprite.anchor.set(0.5);
+mapSprite.x = app.screen.width / 2;
+mapSprite.y = app.screen.height / 2;
+
+app.stage.addChild(mapSprite);
+
+let zoom = 1;
+app.view.addEventListener('wheel', (event) => {
+  zoom += event.deltaY * -0.01;
+  zoom = Math.max(0.1, Math.min(5, zoom)); // clamp zoom value
+  mapSprite.scale.set(zoom);
+});
+
+let isDragging = false;
+let lastPointer = { x: 0, y: 0 };
+
+app.view.addEventListener('mousedown', (event) => {
+  isDragging = true;
+  lastPointer.x = event.clientX;
+  lastPointer.y = event.clientY;
+});
+
+app.view.addEventListener('mouseup', () => {
+  isDragging = false;
+});
+
+app.view.addEventListener('mousemove', (event) => {
+  if (isDragging) {
+    const deltaX = event.clientX - lastPointer.x;
+    const deltaY = event.clientY - lastPointer.y;
+    lastPointer.x = event.clientX;
+    lastPointer.y = event.clientY;
+    mapSprite.x += deltaX;
+    mapSprite.y += deltaY;
+  }
+});
+        </script>
+    </body>
+</html>
+  

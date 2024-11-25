@@ -1,0 +1,87 @@
+<html>
+    <header>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/8.2.2/pixi.min.js" integrity="sha512-jwGk4yqIQepdRi14npQ9xivu3Q8wB7/8f564Nhg+ifLv/Ygm8axxeOgZA75DjqgwgjMVgnIAR9nG6i8jz+K/iw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </header>
+    <body>
+        <script>
+            (async ()=> {
+                const app = new PIXI.Application();
+                globalThis.__PIXI_APP__ = app;
+                await app.init({background:"#f0f0f0",resizeTo:window});
+                document.body.appendChild(app.canvas);
+
+                let textures = await PIXI.Assets.load(['assets/symbol0.png','assets/symbol1.png','assets/symbol2.png','assets/symbol3.png','assets/symbol4.png'])
+                
+                console.log(textures);
+                let reelContainer = new PIXI.Container();
+                reelContainer.scale.set(0.4);
+                reelContainer.x = app.screen.width/2;
+                //reelContainer.y = app.screen.height/2;
+                
+                reelContainer.rotation = 0;
+       /*          app.ticker.add((time) =>
+    {
+        
+        reelContainer.rotation -= 0.01 * time.deltaTime;
+    }); */
+
+                let noOfstrips = 4;
+                let symbolsPerRow = 3;
+                let strips = [];
+                let symWidth = 240;
+                let symHeight = 240;
+                let graphic = new PIXI.Graphics();
+                graphic.rect(0,0,1000,1000);
+                graphic.fill(0xf0f0f0);
+                app.stage.addChild(reelContainer);
+                //app.stage.addChild(graphic);
+                //reelContainer.mask=graphic;
+                
+                for(let i=0; i<noOfstrips; i++){
+                    let reel = new PIXI.Container();
+                    for(j=0;j<symbolsPerRow+2;j++){
+                        let sym = PIXI.Sprite.from(`assets/symbol${Math.floor(Math.random() * (4 - 0 + 1) + 0)}.png`);
+                        reel.addChild(sym);
+                        console.log(j)
+                        sym.y = symHeight * j + 10;
+                    }
+                    reel.x = symWidth * i + 20;
+                    reelContainer.addChild(reel);
+                    strips.push(reel);
+                }
+                //reelContainer.pivot.set(reelContainer.width/2,reelContainer.height/2);
+                reelContainer.x = app.screen.width/2 - reelContainer.width/2;
+
+                let btnContainer = new PIXI.Container();
+                let button = new PIXI.Graphics();
+                button.roundRect(app.screen.width/2 - button.width/2,0,100,70,40);
+                //button.x = app.screen.width/2 - button.width/2;
+               // button.y = app.screen.height * 2;
+                button.fill(0xff3300);
+                btnContainer.addChild(button);
+                button.eventMode = 'static';
+                button.cursor = 'pointer';
+                button.addListener('pointerdown', () =>
+    {
+        //startPlay();
+        console.log("Hello")
+    });
+
+              /*   let text = new PIXI.Text('click',{"fontFamily":"Arial","fill":"#ffffff",  "stroke": "#87CEEB",
+                                                    "strokeThickness": 3,
+                                                    "dropShadow": true,
+                                                    "dropShadowDistance": 0,
+                                                    "dropShadowBlur": 10,
+                                                    "dropShadowColor": "0x000000",
+                                                    "align": "center"}) */
+               // text.anchor.set(0.5);
+              /*   text.x = button.width/2;
+                text.y = button.height/2; */
+                reelContainer.addChild(btnContainer);
+                //btnContainer.addChild(text);
+                
+
+            })()
+        </script>
+    </body>
+</html>

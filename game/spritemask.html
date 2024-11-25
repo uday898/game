@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.12/pixi.min.js" integrity="sha512-Fvs7q5wIAzPgyYNEzppTt3G3/U8FvQwr9WQJHe113FQLX5tIL8uS4m6Rq+04SXf+C3IgorXW4HQzKKVLAGWgFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <script>
+const app = new PIXI.Application();
+document.body.appendChild(app.view);
+
+//app.loader.add('spritesheet','assets/background.json').load(loaded)
+app.loader
+    .add('sheet','assets/background.json')
+    .load(onAssetsLoaded);
+
+function onAssetsLoaded(resouces){
+    const sprite = new PIXI.Sprite.from('maingamebg');
+sprite.width = app.screen.width;
+sprite.height = app.screen.height;
+
+const mask = new PIXI.Graphics();
+mask.beginFill(0xffffff);
+//mask.drawCircle(app.screen.width / 2, app.screen.height / 2, 100);
+mask.drawRoundedRect(app.screen.width / 2, app.screen.height / 2, 100,100,10);
+
+mask.endFill();
+
+sprite.mask = mask;
+app.stage.addChild(sprite);
+app.stage.addChild(mask);
+
+let isDraggable = false;
+sprite.interactive = true;
+sprite.on('pointerdown',()=>{
+    isDraggable = true;
+});
+
+sprite.on('pointerup', onDragEnd)
+sprite.on('pointerupoutside', onDragEnd)
+
+function onDragEnd(){
+    isDraggable = false;
+};
+
+
+sprite.on('pointermove',(event)=>{
+    if(isDraggable){
+        let data = event.data;
+        mask.x = data.getLocalPosition(app.stage).x - app.screen.width / 2;
+        mask.y = data.getLocalPosition(app.stage).y - app.screen.height / 2;
+    }
+});
+}
+
+
+
+
+        </script>
+    </body>
+</html>
